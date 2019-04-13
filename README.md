@@ -1,9 +1,12 @@
 Motion detection dengan accumulative difference image (ADI).
 project ini untuk mengetahui bagaimana metode atau algoritma ADI ini mendeteksi sebuah pergerakan dari beberapa frame.
-adi yang digunakan adalah ADI absolute.
+
+ADI yang digunakan adalah ADI absolute.
 
 req :
+
 python 3.6
+
 open cv
 
 referensi :
