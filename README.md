@@ -20,6 +20,7 @@ https://sandipanweb.wordpress.com/2017/05/
 ---------------------------------------------------------------------------------------------------------------------
 
 diharapkan hasil dari adi ini seperti dibawah ini :
+![motion](https://user-images.githubusercontent.com/23205402/56074786-dcd22200-5dea-11e9-98f3-239a9035ceb7.gif)
 ![adi](https://user-images.githubusercontent.com/23205402/56074697-6f71c180-5de9-11e9-8cb4-ee58a576e0aa.png)
 ![download](https://user-images.githubusercontent.com/23205402/56074698-6f71c180-5de9-11e9-9533-be789c6652f8.png)
 ![rumus](https://user-images.githubusercontent.com/23205402/56074699-700a5800-5de9-11e9-9f28-b63c46698c3c.png)
