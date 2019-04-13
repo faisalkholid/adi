@@ -1,5 +1,6 @@
-motion detection dengan accumulative difference image.
-project ini untuk mengetahui bagaimana metode atau algoritma adi ini mendeteksi sebuah pergerakan dari beberapa frame.
+motion detection dengan accumulative difference image (ADI).
+project ini untuk mengetahui bagaimana metode atau algoritma ADI ini mendeteksi sebuah pergerakan dari beberapa frame.
+adi yang digunakan adalah ADI absolute
 
 referensi :
 https://slideplayer.com/slide/7870253/
