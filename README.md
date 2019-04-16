@@ -3,7 +3,7 @@ project ini untuk mengetahui bagaimana metode atau algoritma ADI ini mendeteksi 
 
 ADI yang digunakan adalah ADI absolute.
 
-tujuan : bagaimana mengetahui cara kerja metode ADI dalam mendeteksi gerakan.
+Tujuan : bagaimana mengetahui cara kerja metode ADI dalam mendeteksi gerakan.
 
 --------------------------------------------------------------------------------------------------------------------
 req :
