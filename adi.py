@@ -7,7 +7,8 @@ import os
 
 
 class MotionADI(object):
-    def __init__(self, thresh=0.5, limit=10, fdn=30, adi_path="result", **kwargs):
+    # limit = batas ADI yang di proses || fdn = batas frame untuk mereset put-text deteksi
+    def __init__(self, thresh = 0.5, limit = 10, fdn = 20, adi_path = "result", **kwargs):
         self.fdn = fdn
         self.thresh = thresh
         self.limit = limit
@@ -34,6 +35,7 @@ class MotionADI(object):
         output = mean
         return output
 
+    # Mengkombinsai setiap frame yang ada gerakan per 20 frame
     def combine_motion_frame(self):
         fshape = self.motion_frames[-1].shape
         image = np.zeros(fshape)
@@ -42,6 +44,7 @@ class MotionADI(object):
         return image
 
     def filter(self, frame):
+        # Menghitung jumlah frame
         seg = self._segmentation(frame)
         self.frames.append(seg)
         self._put_text(frame, f'Frame Number: {str(self.idx)}', loc=(10, 40))
@@ -50,15 +53,14 @@ class MotionADI(object):
             abs_diff = cv2.absdiff(self.frames[self.idx - 1], self.frames[self.idx])
             motion = np.mean(abs_diff) > self.thresh
             if motion:
+                # Looping id jika ada gerakan
                 self.motion_idx.append(self.idx)
                 if len(self.motion_frames) < self.limit:
-                    # ngumpulin barang bukti
+                    # Mengumpulkan Frame
                     self.motion_frames.append(abs_diff)
                     return False, abs_diff
                 else:
-
-                    # telah lengkap barang bukti
-                    # motion is detected
+                    # Meyimpan hasil 20 frame ketika ada gerakan
                     image_adi = self.combine_motion_frame()
                     path = os.path.join(self.adi_path, f'frame_{self.adi_id}.jpg')
                     cv2.imwrite(path, image_adi)
@@ -75,24 +77,28 @@ class MotionADI(object):
         else:
             return False, np.zeros(frame.shape)
 
+    # Penambahan/Looping frame id
     def increment_id(self):
         self.idx = self.idx + 1
 
     def show_detection(self, frame):
+        # Jika terdeteksi munculin text
         if self.is_detected:
             self._put_text(frame, "Motion: Detected")
+            # Jika sudah lebih dari fdn maka akan kembali ke tidak terdeteksi jika tidak ada gerakan
             if self.idx - self.detected_id >= self.fdn:
                 self.is_detected = False
                 self.detected_id = 0
         else:
+        # Jika tidak terdeteksi munculin text
             self._put_text(frame, "Motion: Undetected")
 
     def _put_text(self, frame, text, loc=(10, 20)):
-        cv2.putText(frame, text, loc, self.font, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, text, loc, self.font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
 
 
-cap = cv2.VideoCapture("sampel.mp4")
-madi = MotionADI(thresh=0.5, fdn=20)
+cap = cv2.VideoCapture(0)
+madi = MotionADI(thresh = 0.5, fdn = 20)
 
 while (True):
     # Capture frame-by-frame
