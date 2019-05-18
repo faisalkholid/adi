@@ -55,6 +55,7 @@ class MotionADI(object):
         if len(self.frames) > 0:
             abs_diff = cv2.absdiff(self.frames[self.idx],self.frames[self.idx - 1])
             motion = np.mean(abs_diff) > self.thresh
+            # mengecek jika ada gerakan dan itu gerakan manusia maka sistem mengeluarkan "Human Detection"
             if motion and self.human_detector.detect(frame) :
                 # Looping id jika ada gerakan
                 self.motion_idx.append(self.idx)
@@ -115,12 +116,13 @@ class HumanDetector():
             self.face_cascade = cv2.CascadeClassifier(os.path.join('data/haarcascade_frontalface_default.xml'))
 
     def detect(self, frame):
+        # mengecek dengan haar cascade clasifier apaka itu manusia atau bukan
         gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
         human = self.person_cascade.detectMultiScale(gray)
 
         if len(human) > 0:
             if self.upper_detect:
-                upper_body = self.upper_body_cascade.detectMultiScale(gray)
+                upper_body = self.upper_cascade.detectMultiScale(gray)
                 if len(upper_body) > 0:
                     return True
             if self.face_detect:
@@ -128,7 +130,7 @@ class HumanDetector():
                 if len(face) > 0:
                     return True
             if self.face_detect and self.upper_detect:
-                upper_body = self.upper_body_cascade.detectMultiScale(gray)
+                upper_body = self.upper_cascade.detectMultiScale(gray)
                 face = self.face_cascade.detectMultiScale(gray)
                 if len(face) > 0 and len(upper_body) > 0:
                     return True
@@ -140,12 +142,12 @@ class HumanDetector():
 # upper_body_cascade = cv2.CascadeClassifier(os.path.join('data/haarcascade_upperbody.xml'))
 # lower_body_cascade = cv2.CascadeClassifier(os.path.join('data/haarcascade_lowerbody.xml'))
 # face_cascade = cv2.CascadeClassifier(os.path.join('data/haarcascade_frontalface_default.xml'))
-#
+
 # def tester(frame):
 #
 #
 #     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-#     human = person_cascade.detectMultiScale(gray)
+#     human = face_cascade.detectMultiScale(gray)
 #
 #     for (x, y, w, h) in human:
 #         # for whole body detetction
@@ -154,22 +156,21 @@ class HumanDetector():
 #         roi_color = frame[y:y + h, x:x + w]
 #
 #         # for upper body detection
-#         upper_body = upper_body_cascade.detectMultiScale(roi_gray)
-#         for (ux, uy, uw, uh) in upper_body:
-#             cv2.rectangle(roi_color, (ux, uy), (ux + uw, uy + uh), (0, 0, 255), 2)
+#         # upper_body = upper_body_cascade.detectMultiScale(roi_gray)
+#         # for (ux, uy, uw, uh) in upper_body:
+#         #     cv2.rectangle(roi_color, (ux, uy), (ux + uw, uy + uh), (0, 0, 255), 2)
 #
 #         # for lower body detection
-#         lower_body = lower_body_cascade.detectMultiScale(roi_gray)
-#         for (lx, ly, lw, lh) in lower_body:
-#             cv2.rectangle(roi_color, (lx, ly), (lx + lw, ly + lh), (255, 0, 0), 2)
+#         # lower_body = lower_body_cascade.detectMultiScale(roi_gray)
+#         # for (lx, ly, lw, lh) in lower_body:
+#         #     cv2.rectangle(roi_color, (lx, ly), (lx + lw, ly + lh), (255, 0, 0), 2)
 #
 #         # for face detection
 #         face = face_cascade.detectMultiScale(roi_gray)
 #         for (fx, fy, fw, fh) in face:
 #             cv2.rectangle(roi_color, (fx, fy), (fx + fw, fy + fh), (120, 230, 0), 4)
 
-
-cap = cv2.VideoCapture("walk.mp4")
+cap = cv2.VideoCapture("video/1.mp4")
 madi = MotionADI(thresh = 0.3, fdn = 10)
 
 while (True):
